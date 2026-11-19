@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Ambiente virtual
+venv/
+.venv/
+env/
+
+# Banco de dados SQLite (é recriado automaticamente ao rodar o app)
+instance/
+*.db
+*.sqlite3
+
+# Variáveis de ambiente / segredos
+.env
+
+# Uploads dos usuários (mantém apenas a imagem padrão)
+static/uploads/*
+!static/uploads/padrao.png
+
+# IDEs e sistema operacional
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

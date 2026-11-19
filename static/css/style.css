@@ -1,0 +1,198 @@
+/* ==========================================================
+   Cadastro de Produtos — identidade "etiqueta de preço"
+   ========================================================== */
+:root {
+    --fundo: #edf2f1;
+    --superficie: #ffffff;
+    --tinta: #12343b;
+    --tinta-suave: #52696d;
+    --linha: #d3dedc;
+    --campo: #b9c8c6;
+    --foco: #1f7a8c;
+    --etiqueta: #f2b705;
+    --perigo: #c73e3e;
+    --perigo-fundo: #fdeeee;
+    --ok: #1e6e49;
+    --ok-fundo: #e3f4ea;
+    --raio: 10px;
+    --fonte-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --fonte-texto: "DM Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: var(--fonte-texto);
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--tinta);
+    background: var(--fundo);
+}
+
+/* ---------- Cabeçalho ---------- */
+.topo { background: var(--tinta); color: #fff; }
+.topo-conteudo {
+    max-width: 1180px; margin: 0 auto; padding: 16px 24px;
+    display: flex; align-items: center; gap: 12px;
+}
+.marca {
+    display: flex; align-items: center; gap: 12px;
+    color: #fff; text-decoration: none;
+    font-family: var(--fonte-titulo); font-size: 1.4rem; font-weight: 700; letter-spacing: -0.01em;
+}
+.marca-etiqueta {
+    position: relative; width: 28px; height: 22px; background: var(--etiqueta);
+    clip-path: polygon(9px 0, 100% 0, 100% 100%, 9px 100%, 0 50%);
+}
+.marca-etiqueta::after {
+    content: ""; position: absolute; left: 8px; top: 8px; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--tinta);
+}
+
+/* ---------- Estrutura ---------- */
+main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 48px; }
+.layout { display: grid; grid-template-columns: 340px 1fr; gap: 28px; align-items: start; }
+.layout > * { min-width: 0; }
+.painel { position: sticky; top: 20px; }
+
+h2 { font-family: var(--fonte-titulo); font-size: 1.35rem; line-height: 1.2; margin: 0 0 16px; letter-spacing: -0.01em; }
+
+/* ---------- Formulários ---------- */
+.cartao {
+    background: var(--superficie); border: 1px solid var(--linha);
+    border-radius: 14px; padding: 22px;
+}
+.cartao.estreito { max-width: 540px; margin: 0 auto; }
+
+.campo { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.campo > label, .campo > .rotulo { font-size: 0.9rem; font-weight: 600; }
+.dica { font-size: 0.82rem; color: var(--tinta-suave); }
+
+input[type=text], input[type=number], select {
+    width: 100%; font: inherit; color: var(--tinta);
+    padding: 10px 12px; background: #fff;
+    border: 1px solid var(--campo); border-radius: 8px;
+    transition: border-color .15s, box-shadow .15s;
+}
+select {
+    appearance: none; padding-right: 36px; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%2312343b' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center;
+}
+input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible {
+    outline: 3px solid rgba(31, 122, 140, .4); outline-offset: 1px; border-color: var(--foco);
+}
+
+.preco-campo { position: relative; }
+.preco-campo span {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--tinta-suave); font-weight: 600; pointer-events: none;
+}
+.preco-campo input { padding-left: 38px; }
+
+input[type=file] {
+    width: 100%; font: inherit; font-size: 0.9rem; color: var(--tinta-suave);
+    padding: 8px; border: 1.5px dashed var(--campo); border-radius: 8px; background: #f8fbfa;
+}
+input[type=file]::file-selector-button {
+    font: inherit; font-weight: 600; margin-right: 12px; padding: 7px 12px;
+    border: 0; border-radius: 6px; background: var(--tinta); color: #fff; cursor: pointer;
+}
+input[type=file]::file-selector-button:hover { background: #1b4a54; }
+
+/* ---------- Botões ---------- */
+.botao {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    font: inherit; font-weight: 600; text-decoration: none; cursor: pointer;
+    padding: 10px 18px; border-radius: 8px; border: 1px solid transparent;
+    background: var(--tinta); color: #fff; transition: background .15s, border-color .15s;
+}
+.botao:hover { background: #1b4a54; }
+.botao.cheio { width: 100%; }
+.botao.claro { background: #fff; color: var(--tinta); border-color: var(--campo); }
+.botao.claro:hover { background: #f1f6f5; border-color: var(--tinta-suave); }
+.botao.pequeno { padding: 6px 12px; font-size: 0.88rem; }
+.botao.perigo { background: #fff; color: var(--perigo); border-color: #e9b4b4; }
+.botao.perigo:hover { background: var(--perigo-fundo); border-color: var(--perigo); }
+.linha-botoes { display: flex; gap: 10px; margin-top: 4px; }
+
+/* ---------- Alertas ---------- */
+.alerta {
+    padding: 12px 16px; border-radius: 8px; margin-bottom: 12px;
+    border-left: 5px solid; font-weight: 500;
+}
+.alerta.erro { background: var(--perigo-fundo); color: #8a2323; border-color: var(--perigo); }
+.alerta.sucesso { background: var(--ok-fundo); color: var(--ok); border-color: var(--ok); }
+
+/* ---------- Busca ---------- */
+.cabecalho-lista { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.contagem { color: var(--tinta-suave); font-size: 0.92rem; margin: 0 0 16px; }
+.busca { display: flex; gap: 8px; margin-bottom: 16px; }
+.busca input { flex: 1; }
+
+/* ---------- Tabela ---------- */
+.tabela-wrap {
+    background: var(--superficie); border: 1px solid var(--linha);
+    border-radius: 14px; overflow-x: auto;
+}
+table { width: 100%; border-collapse: collapse; min-width: 640px; }
+th {
+    text-align: left; font-size: 0.85rem; font-weight: 600; color: var(--tinta-suave);
+    padding: 12px 14px; background: #f5f9f8; border-bottom: 1px solid var(--linha);
+}
+td { padding: 12px 14px; border-bottom: 1px solid var(--linha); vertical-align: middle; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: #f8fbfa; }
+td.id { color: var(--tinta-suave); font-variant-numeric: tabular-nums; width: 48px; }
+td.nome { font-weight: 600; }
+td img {
+    display: block; width: 56px; height: 56px; object-fit: cover;
+    border-radius: 8px; border: 1px solid var(--linha); background: #f0f4f3;
+}
+.vazio { text-align: center; color: var(--tinta-suave); padding: 36px 16px !important; }
+
+/* Categoria (chips) */
+.chip {
+    display: inline-block; padding: 3px 11px; border-radius: 999px;
+    font-size: 0.84rem; font-weight: 600; white-space: nowrap;
+}
+.chip.c0 { background: #dcefF2; color: #0f4f5c; }
+.chip.c1 { background: #fbe8d3; color: #7a4309; }
+.chip.c2 { background: #e5e3f7; color: #403a8c; }
+.chip.c3 { background: #ddf1df; color: #1f5f2b; }
+.chip.c4 { background: #f8dde6; color: #8a2848; }
+
+/* Preço em formato de etiqueta */
+.preco {
+    position: relative; display: inline-block; white-space: nowrap;
+    background: var(--etiqueta); color: var(--tinta); font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    padding: 4px 12px 4px 22px;
+    clip-path: polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 50%);
+}
+.preco::before {
+    content: ""; position: absolute; left: 10px; top: 50%; width: 6px; height: 6px;
+    margin-top: -3px; border-radius: 50%; background: #fff;
+}
+
+.acoes { display: flex; gap: 8px; align-items: center; }
+.acoes form { margin: 0; }
+
+/* ---------- Edição ---------- */
+.foto-atual { display: flex; align-items: center; gap: 14px; }
+.foto-atual img {
+    width: 96px; height: 96px; object-fit: cover; border-radius: 10px;
+    border: 1px solid var(--linha);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 880px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    .painel { position: static; }
+    main { padding: 20px 16px 40px; }
+    .topo-conteudo { padding: 14px 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+}

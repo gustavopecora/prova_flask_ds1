@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="layout">
+
+    <aside class="painel">
+        <form class="cartao" action="{{ url_for('main.salvar') }}" method="POST" enctype="multipart/form-data">
+            <h2>Cadastrar produto</h2>
+
+            <div class="campo">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" placeholder="Ex.: Fone de ouvido"
+                       value="{{ form.nome if form else '' }}">
+                <span class="dica">Mínimo de 3 caracteres.</span>
+            </div>
+
+            <div class="campo">
+                <label for="preco">Preço</label>
+                <div class="preco-campo">
+                    <span>R$</span>
+                    <input type="number" step="0.01" id="preco" name="preco" placeholder="0,00"
+                           value="{{ form.preco if form else '' }}">
+                </div>
+            </div>
+
+            <div class="campo">
+                <label for="categoria_id">Categoria</label>
+                <select id="categoria_id" name="categoria_id">
+                    <option value="">Selecione a categoria</option>
+                    {% for c in categorias %}
+                    <option value="{{ c.id }}"
+                        {{ 'selected' if form and form.categoria_id == c.id else '' }}>
+                        {{ c.nome }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="foto">Foto</label>
+                <input type="file" id="foto" name="foto" accept=".png,.jpg,.jpeg,.gif">
+                <span class="dica">Opcional. PNG, JPG, JPEG ou GIF.</span>
+            </div>
+
+            <button type="submit" class="botao cheio">Salvar produto</button>
+        </form>
+    </aside>
+
+    <section>
+        <div class="cabecalho-lista">
+            <h2>Produtos</h2>
+        </div>
+
+        <form class="busca" action="{{ url_for('main.index') }}" method="GET" role="search">
+            <input type="text" name="busca" placeholder="Pesquisar por nome..."
+                   value="{{ busca }}" aria-label="Pesquisar por nome">
+            <button type="submit" class="botao">Buscar</button>
+            {% if busca %}<a class="botao claro" href="{{ url_for('main.index') }}">Limpar</a>{% endif %}
+        </form>
+
+        <p class="contagem">
+            {% if busca %}
+                {{ produtos|length }} resultado(s) para “{{ busca }}”, em ordem alfabética
+            {% else %}
+                {{ produtos|length }} produto(s) cadastrado(s), em ordem alfabética
+            {% endif %}
+        </p>
+
+        <div class="tabela-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Foto</th>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Preço</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in produtos %}
+                    <tr>
+                        <td><img src="{{ url_for('static', filename='uploads/' + p.imagem) }}" alt="Foto de {{ p.nome }}"></td>
+                        <td class="id">{{ p.id }}</td>
+                        <td class="nome">{{ p.nome }}</td>
+                        <td><span class="chip c{{ p.categoria.id % 5 }}">{{ p.categoria.nome }}</span></td>
+                        <td><span class="preco">R$ {{ "%.2f"|format(p.preco) }}</span></td>
+                        <td>
+                            <div class="acoes">
+                                <a class="botao claro pequeno" href="{{ url_for('main.editar', id=p.id) }}">Editar</a>
+                                <form action="{{ url_for('main.excluir', id=p.id) }}" method="POST"
+                                      onsubmit="return confirm('Excluir o produto {{ p.nome|e }}?');">
+                                    <button type="submit" class="botao perigo pequeno">Excluir</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="vazio">
+                            {% if busca %}
+                                Nenhum produto encontrado para essa busca.
+                            {% else %}
+                                Nenhum produto cadastrado ainda. Use o formulário para cadastrar o primeiro.
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</div>
+{% endblock %}
